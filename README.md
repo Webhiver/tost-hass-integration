@@ -18,20 +18,26 @@ Native Home Assistant support for [TOST — The Open Source Thermostat](https://
 - **Switch entity** per satellite (configuration category, v0.7+): relay enable — written directly to each satellite's `/api/config`.
 - **Options-flow "Show diagnostic entities" toggle** — off hides WiFi signal, sensor message, WiFi connected, sensor problem by disabling them in the entity registry. User-overridden enables/disables are preserved.
 
-~~The update entity, buttons, and services follow in v0.4~~ — *v0.4 has been dropped from scope: firmware updates and reboots are managed from the device's own web UI.* See `docs/hass-integration.md` in the main repo for the current roadmap.
+~~The update entity, buttons, and services follow in v0.4~~ — *v0.4 has been dropped from scope: firmware updates and reboots are managed from the device's own web UI.* See [`docs/hass-integration.md`](https://github.com/Webhiver/tost/blob/main/docs/hass-integration.md) in the firmware repo for the current roadmap.
 
 ## Install
 
 ### HACS (custom repository)
 
-1. HACS → Integrations → ⋮ → **Custom repositories**.
-2. Add `https://github.com/Webhiver/tost` with category **Integration**. HACS picks up the integration from the `hass/` subdirectory.
-3. Install **TOST** from the HACS Integrations list.
-4. Restart Home Assistant.
+1. In Home Assistant: **HACS → ⋮ (top right) → Custom repositories**.
+2. Add `https://github.com/Webhiver/tost-hass-integration` with category **Integration**, then close the dialog.
+3. **TOST** appears in the HACS Integrations list. Open it and click **Download**. Confirm the version when prompted.
+4. **Restart Home Assistant.** HACS will prompt you — a full restart is required because a new platform Python module is being added.
+5. Configure the integration: see [Configure](#configure) below.
+
+> If TOST doesn't appear right after adding the custom repository, open **HACS → ⋮ → Reload all custom repositories** to force a refresh.
 
 ### Manual
 
-Copy `hass/custom_components/tost/` into your Home Assistant `config/custom_components/` directory, then restart.
+1. Download the latest source archive from the [Releases page](https://github.com/Webhiver/tost-hass-integration/releases) (the auto-generated `Source code (zip)`).
+2. Extract the `custom_components/tost/` folder into your Home Assistant config directory at `config/custom_components/tost/`.
+3. Restart Home Assistant.
+4. Configure the integration: see [Configure](#configure) below.
 
 ## Configure
 
