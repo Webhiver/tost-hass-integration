@@ -1,0 +1,152 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to a TOST",
+        "description": "Enter the host or IP address of the TOST acting as the host.",
+        "data": {
+          "host": "Host or IP address"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not reach the device. Check the host and that it is on the same network.",
+      "not_a_host": "This device is configured as a satellite. Add the paired host instead — its satellites are surfaced automatically.",
+      "no_mac": "The device did not report a MAC address. Reboot it and try again."
+    },
+    "abort": {
+      "already_configured": "This TOST is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "TOST options",
+        "data": {
+          "scan_interval": "Poll interval (seconds)",
+          "show_diagnostic": "Show diagnostic entities"
+        },
+        "data_description": {
+          "scan_interval": "How often to fetch state from the device. Lower values increase responsiveness; values below 5 seconds can starve the device's main loop.",
+          "show_diagnostic": "When off, hides diagnostic entities (WiFi signal, sensor message, WiFi connected, sensor problem) by disabling them in the entity registry. User-overridden enables/disables are preserved."
+        }
+      }
+    }
+  },
+  "entity": {
+    "climate": {
+      "thermostat": {
+        "state": {
+          "off": "Off",
+          "heat": "Manual",
+          "auto": "Schedule"
+        }
+      }
+    },
+    "sensor": {
+      "temperature": {
+        "name": "Temperature"
+      },
+      "humidity": {
+        "name": "Humidity"
+      },
+      "wifi_strength": {
+        "name": "WiFi signal"
+      },
+      "sensor_message": {
+        "name": "Sensor message"
+      },
+      "effective_temperature": {
+        "name": "Effective temperature"
+      },
+      "flame_duration": {
+        "name": "Flame duration"
+      },
+      "active_slot_index": {
+        "name": "Active schedule slot"
+      },
+      "next_slot_change": {
+        "name": "Next schedule change"
+      }
+    },
+    "binary_sensor": {
+      "online": {
+        "name": "Online"
+      },
+      "flame": {
+        "name": "Flame"
+      },
+      "wifi_connected": {
+        "name": "WiFi connected"
+      },
+      "sensor_problem": {
+        "name": "Sensor problem"
+      }
+    },
+    "number": {
+      "hysteresis": {
+        "name": "Hysteresis"
+      },
+      "max_flame_duration": {
+        "name": "Max flame duration"
+      },
+      "flame_cooldown": {
+        "name": "Flame cooldown"
+      },
+      "led_brightness": {
+        "name": "LED brightness"
+      },
+      "sensor_temperature_offset": {
+        "name": "Temperature offset"
+      },
+      "sensor_humidity_offset": {
+        "name": "Humidity offset"
+      },
+      "satellite_grace_period": {
+        "name": "Satellite grace period"
+      }
+    },
+    "select": {
+      "operating_mode": {
+        "name": "Operating mode",
+        "state": {
+          "off": "Off",
+          "manual": "Manual",
+          "schedule": "Schedule"
+        }
+      },
+      "flame_mode": {
+        "name": "Flame aggregation",
+        "state": {
+          "average": "Average of sensors",
+          "all": "All sensors must agree",
+          "any": "Any sensor (most sensitive)",
+          "one": "Single sensor"
+        }
+      },
+      "flame_mode_sensor": {
+        "name": "Flame aggregation sensor",
+        "state": {
+          "local": "Local"
+        }
+      },
+      "local_sensor": {
+        "name": "Local sensor policy",
+        "state": {
+          "included": "Always include local",
+          "fallback": "Only when no satellites online"
+        }
+      }
+    },
+    "switch": {
+      "relay_enabled": {
+        "name": "Relay"
+      }
+    }
+  },
+  "exceptions": {
+    "schedule_mode_active": {
+      "message": "The thermostat is in schedule mode. Switch to manual to change the target temperature."
+    }
+  }
+}
