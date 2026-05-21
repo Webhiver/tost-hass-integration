@@ -43,7 +43,7 @@ Native Home Assistant support for [TOST — The Open Source Thermostat](https://
 
 Settings → Devices & Services → **Add Integration** → **TOST**.
 
-- Enter the host or IP of the TOST acting as **host** (e.g. `192.168.1.50` or `picothermostat.local` if your router resolves it).
+- Enter the host or IP of the TOST acting as **host** (e.g. `192.168.1.50` or `tost.local` if your router resolves it).
 - Satellites cannot be added directly — they appear on the host's web UI as paired devices and are surfaced automatically through the host integration.
 
 ### Options
