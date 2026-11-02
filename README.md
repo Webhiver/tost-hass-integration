@@ -62,6 +62,7 @@ After setup, the integration's **Configure** button exposes:
 - **`relay_enabled` is independent.** The `switch.<name>_relay` entity is a hardware kill switch separate from `hvac_mode`. When it's off, the climate's `hvac_action` reports `off` even if `hvac_mode` is set to `heat`/`auto`.
 - **`current_temperature`** reports `effective_temperature` (the aggregated value the thermostat algorithm uses) when available, falling back to the local sensor reading.
 - **Satellite config entities (relay switch, LED brightness, temperature/humidity offsets)** talk to each satellite's HTTP API directly — the host is in the data path only for *discovering* satellites (their MAC, IP, and online flag come from the host's `/api/status`). Reads use a separate, slower poll cadence (60s default) than the main `/api/status` loop and skip satellites the host reports as offline. A single transient failure doesn't flip entities to unavailable — three consecutive failures are needed before the cached config is dropped.
+- **A satellite unpaired on the host** keeps its device and entities (unavailable), so automations that use them don't silently break and the same satellite can be paired again. To remove it, open the device and choose **⋮ → Delete**. Home Assistant only allows that for a device the host no longer lists: the host and its current satellites are refused, and so is everything while the host can't be reached.
 
 ## Compatibility
 

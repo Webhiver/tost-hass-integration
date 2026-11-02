@@ -6,7 +6,7 @@ import logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, EntityCategory, Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers import device_registry as dr, entity_registry as er
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import PicoApi
@@ -71,6 +71,38 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     if unload_ok:
         hass.data[DOMAIN].pop(entry.entry_id, None)
     return unload_ok
+
+
+async def async_remove_config_entry_device(
+    hass: HomeAssistant, entry: ConfigEntry, device: dr.DeviceEntry
+) -> bool:
+    """Let the user delete a device the host no longer has (the device page's Delete).
+
+    A satellite unpaired on the host keeps its device and entities here (not
+    deleted on its own: automations may refer to them, and the same MAC may
+    be paired again). The host and every satellite it still lists (paired, or
+    in its live list) are refused, and so is everything while the host can't
+    be read: there is nothing to compare with.
+    """
+    data = hass.data.get(DOMAIN, {}).get(entry.entry_id)
+    if not data:
+        return False
+    coordinator: PicoCoordinator = data[DATA_HOST]
+    if not coordinator.last_update_success or not coordinator.data:
+        return False
+
+    current = {coordinator.api.host.lower()}
+    if coordinator.host_mac:
+        current.add(coordinator.host_mac.lower())
+    for sat in [*coordinator.satellites, *(coordinator.config.get("satellites") or [])]:
+        mac = sat.get("mac") if isinstance(sat, dict) else None
+        if isinstance(mac, str):
+            current.add(mac.lower())
+
+    return not any(
+        domain == DOMAIN and str(identifier).lower() in current
+        for domain, identifier in device.identifiers
+    )
 
 
 async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
