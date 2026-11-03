@@ -1,8 +1,13 @@
 """Number entities for tunable config values on host and satellites.
 
-Host entities cover the thermostat-control tunables (hysteresis, durations,
-grace period, etc.) and the per-sensor offsets / LED brightness for the
-host's own hardware.
+Host entities cover the thermostat-control tunables (start and stop
+hysteresis, durations, grace period, etc.) and the per-sensor offsets / LED
+brightness for the host's own hardware.
+
+The two hysteresis values must add up to at least 0.5 °C, which the device
+checks on the pair a write leaves. Home Assistant writes one value at a time,
+so to lower the sum raise one value first; the device refuses the other order
+with its own text, which Home Assistant shows as it is.
 
 A subset of these — LED brightness and the two sensor offsets — is also
 meaningful on each paired satellite, since satellites have the same hardware.
@@ -40,10 +45,21 @@ class PicoNumberDescription(NumberEntityDescription):
 
 NUMBER_TYPES: tuple[PicoNumberDescription, ...] = (
     PicoNumberDescription(
-        key="hysteresis",
-        translation_key="hysteresis",
-        config_key="hysteresis",
-        native_min_value=0.1,
+        key="start_hysteresis",
+        translation_key="start_hysteresis",
+        config_key="start_hysteresis",
+        native_min_value=0.2,
+        native_max_value=5.0,
+        native_step=0.1,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        mode=NumberMode.BOX,
+        entity_category=EntityCategory.CONFIG,
+    ),
+    PicoNumberDescription(
+        key="stop_hysteresis",
+        translation_key="stop_hysteresis",
+        config_key="stop_hysteresis",
+        native_min_value=0.2,
         native_max_value=5.0,
         native_step=0.1,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,

@@ -84,8 +84,11 @@
       }
     },
     "number": {
-      "hysteresis": {
-        "name": "Hysteresis"
+      "start_hysteresis": {
+        "name": "Start hysteresis"
+      },
+      "stop_hysteresis": {
+        "name": "Stop hysteresis"
       },
       "max_flame_duration": {
         "name": "Max flame duration"
